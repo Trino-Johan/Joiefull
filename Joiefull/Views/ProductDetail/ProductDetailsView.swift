@@ -120,16 +120,44 @@ struct ProductDetailView: View {
                             
                             Button(action: {
                                 viewModel.addComment(to: product, text: commentText)
-                                commentText = ""
+                                commentText = "" // On vide le champ après publication
                             }) {
                                 Text("Publier")
-                                    // ... tes styles ...
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 8)
                                     .background(commentText.isEmpty ? Color.gray : Color.orange)
                                     .cornerRadius(20)
                             }
                             .disabled(commentText.isEmpty)
-                            // ♿ État du bouton
-                            .accessibilityHint(commentText.isEmpty ? "Écrivez un message pour pouvoir publier" : "Publie votre commentaire")
+                            // ♿ Accessibilité
+                            .accessibilityLabel("Publier mon commentaire")
+                            .accessibilityHint(commentText.isEmpty ? "Écrivez quelque chose pour activer le bouton" : "Envoie votre texte")
+                        }
+                        if !product.comments.isEmpty {
+                            Text("Commentaires (\(product.comments.count))")
+                                .font(.headline)
+                                .padding(.top, 10)
+                                // ♿ Accessibilité : On indique le nombre total de retours
+                                .accessibilityLabel("Liste des commentaires, \(product.comments.count) messages au total")
+
+                            ForEach(product.comments, id: \.self) { comment in
+                                HStack(alignment: .top, spacing: 10) {
+                                    Image(systemName: "person.circle.fill")
+                                        .foregroundColor(.gray.opacity(0.5))
+                                        .accessibilityHidden(true)
+                                    
+                                    Text(comment)
+                                        .font(.subheadline)
+                                        .padding(10)
+                                        .background(Color.gray.opacity(0.1))
+                                        .cornerRadius(10)
+                                }
+                                .padding(.vertical, 2)
+                                // ♿ On groupe chaque bulle pour VoiceOver
+                                .accessibilityElement(children: .combine)
+                            }
                         }
                     }
                 }
@@ -162,6 +190,7 @@ struct ProductDetailView: View {
                 {
                     Image(systemName: "square.and.arrow.up").foregroundColor(.black)
                 }
+                .accessibilityLabel("Partager")
             }
         }
     }
