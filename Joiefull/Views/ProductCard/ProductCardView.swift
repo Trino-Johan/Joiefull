@@ -5,7 +5,7 @@ struct ProductCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // 1. Image avec le bouton Like en bas à droite
+            // 1. Image avec le bouton Like
             ZStack(alignment: .bottomTrailing) {
                 AsyncImage(url: URL(string: product.picture.url)) { image in
                     image
@@ -21,14 +21,15 @@ struct ProductCardView: View {
                         .cornerRadius(15)
                         .overlay(ProgressView())
                 }
-                .accessibilityLabel(product.picture.description)
                 
                 // bouton Like avec le compteur
                 LikeButtonView(product: $product)
                     .padding(8)
+                    // label spécifique au bouton pour VoiceOver
+                    .accessibilityLabel(product.isLiked ? "Retirer des favoris" : "Ajouter aux favoris")
             }
             
-            // 2. Informations du produit (Nom, Prix et étoiles)
+            // 2. Informations du produit
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .firstTextBaseline) {
                     Text(product.name)
@@ -37,7 +38,6 @@ struct ProductCardView: View {
                     
                     Spacer()
                     
-                    // Affichage de la note avec une étoile orange
                     HStack(spacing: 2) {
                         Image(systemName: "star.fill")
                             .foregroundColor(.orange)
@@ -53,7 +53,6 @@ struct ProductCardView: View {
                         .font(.subheadline)
                         .fontWeight(.bold)
                     
-                    // Prix original barré si en promotion
                     if product.price < product.originalPrice {
                         Text("\(String(format: "%.0f", product.originalPrice))€")
                             .font(.caption)
@@ -64,7 +63,11 @@ struct ProductCardView: View {
             }
             .padding(.horizontal, 4)
         }
-        .accessibilityElement(children: .combine)
+        // --- CONFIGURATION ACCESSIBILITÉ ---
+        .accessibilityElement(children: .combine) // Fusionne les textes en une seule annonce
+        .accessibilityLabel(
+            "\(product.name), prix \(String(format: "%.0f", product.price)) euros, note \(String(format: "%.1f", product.averageRating)) sur 5"
+        )
         .accessibilityHint("Double-cliquez pour voir les détails")
     }
 }
