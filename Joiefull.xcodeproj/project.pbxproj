@@ -80,6 +80,11 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		489F68442F5073D800A419E9 /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = App;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +115,7 @@
 		489F66C32F4DFB4B00A419E9 = {
 			isa = PBXGroup;
 			children = (
+				489F68442F5073D800A419E9 /* App */,
 				489F67B12F4E913F00A419E9 /* Tests */,
 				489F67A92F4E8BA800A419E9 /* Gitignore */,
 				489F66CE2F4DFB4B00A419E9 /* Joiefull */,
@@ -145,6 +151,7 @@
 			fileSystemSynchronizedGroups = (
 				489F66CE2F4DFB4B00A419E9 /* Joiefull */,
 				489F67B12F4E913F00A419E9 /* Tests */,
+				489F68442F5073D800A419E9 /* App */,
 			);
 			name = Joiefull;
 			packageProductDependencies = (

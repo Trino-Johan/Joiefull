@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LikeButtonView: View {
-    // On utilise Binding pour modifier le produit "pour de vrai"
+    // Binding pour modifier le produit "pour de vrai"
     @Binding var product: Product
 
     var body: some View {
@@ -22,7 +22,6 @@ struct LikeButtonView: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .background(Color.white)
-            // forme de pilule arrondie comme sur la maquette
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
         }

@@ -23,7 +23,7 @@ struct ProductDetailView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    // 2. Infos Produit (Nom, Prix et Note moyenne)
+                    // 2. Infos Produit (Nom, Prix et note moyenne)
                     HStack(alignment: .firstTextBaseline) {
                         Text(product.name).font(.title2).bold()
                         Spacer()
@@ -63,7 +63,9 @@ struct ProductDetailView: View {
                                 ForEach(1...5, id: \.self) { index in
                                     Image(systemName: index <= product.userRating ? "star.fill" : "star")
                                         .foregroundColor(.orange)
-                                        .onTapGesture { product.userRating = index }
+                                        .onTapGesture {
+                                            viewModel.rateProduct(product, with: index)
+                                            product.userRating = index }
                                 }
                             }
                         }

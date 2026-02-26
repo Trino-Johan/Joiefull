@@ -28,7 +28,7 @@ struct ProductCardView: View {
                     .padding(8)
             }
             
-            // 2. Informations du produit (Nom, Prix et Étoiles)
+            // 2. Informations du produit (Nom, Prix et étoiles)
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .firstTextBaseline) {
                     Text(product.name)

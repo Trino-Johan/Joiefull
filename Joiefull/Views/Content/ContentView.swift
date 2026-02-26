@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = ProductViewModel()
     @Environment(\.horizontalSizeClass) var sizeClass
+    @State private var selectedProductId: Int? = nil
     
     // Grille : 2 colonnes sur iPhone, 3 sur iPad
     var columns: [GridItem] {
@@ -22,9 +23,16 @@ struct ContentView: View {
                         
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach($viewModel.products) { $product in
-                                // On utilise product.wrappedValue pour le test de catégorie
-                                if product.wrappedValue.category == category {
-                                    NavigationLink(destination: ProductDetailView(product: $product, viewModel: viewModel)) {
+                                // 1. Comparaison sécurisée (ignore les majuscules)
+                                if product.category.lowercased() == category.lowercased() {
+                                    
+                                    // 2. Le lien doit ENVELOPPER la carte du produit
+                                    NavigationLink(destination: ProductDetailView(
+                                        product: $product,
+                                        viewModel: viewModel,
+                                        selectedProductId: $selectedProductId
+                                    )) {
+                                        
                                         ProductCardView(product: $product)
                                     }
                                     .buttonStyle(PlainButtonStyle())

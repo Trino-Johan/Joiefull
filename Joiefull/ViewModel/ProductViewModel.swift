@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-@MainActor // Crucial pour que les mises à jour de l'UI se fassent sans bug
+@MainActor // pour que les mises à jour de l'UI se fassent sans bug
 class ProductViewModel: ObservableObject {
     // Les données que la vue va surveiller
     @Published var products: [Product] = []
@@ -31,7 +31,7 @@ class ProductViewModel: ObservableObject {
         isLoading = false
     }
     
-    // Permet d'obtenir uniquement les produits d'une catégorie (ex: "top")
+    // Permet d'obtenir uniquement les produits d'une catégorie (top,bottom,accesssories)
     func getProducts(for category: String) -> [Product] {
         return products.filter { $0.category == category }
     }
@@ -50,6 +50,7 @@ class ProductViewModel: ObservableObject {
                 products[index].averageRating = totalPoints / Double(newCount)
                 products[index].ratingCount = newCount
                 products[index].userHasRated = true
+                products[index].userRating = note
                 
                 print("⭐ Nouvelle moyenne pour \(product.name) : \(products[index].averageRating)")
             }
@@ -57,12 +58,12 @@ class ProductViewModel: ObservableObject {
     }
     
     func addComment(to product: Product, text: String) {
-        // Ovérifie que le texte n'est pas vide
+        // vérifie que le texte n'est pas vide
         guard !text.isEmpty else { return }
         
-        // On trouve le produit dans la liste principale
+        // trouve le produit dans la liste principale
         if let index = products.firstIndex(where: { $0.id == product.id }) {
-            // On ajoute le commentaire en haut de la liste
+            // ajoute le commentaire en haut de la liste
             products[index].comments.insert(text, at: 0)
             print("📝 Nouveau commentaire pour \(product.name) : \(text)")
         }

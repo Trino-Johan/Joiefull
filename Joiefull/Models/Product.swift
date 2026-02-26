@@ -10,11 +10,11 @@ struct Product: Identifiable, Codable {
     let picture: Picture
     
 
-    var averageRating: Double = 4.0
-    var ratingCount: Int = 70
+    var averageRating: Double = 0.0
+    var ratingCount: Int = 0
     var userHasRated: Bool = false
     var isLiked: Bool = false
-    var userRating: Int = 0 // Pour que tes étoiles restent remplies
+    var userRating: Int = 0 // Pour que les étoiles puissent etre remplies
 
     var comments: [String] = []
     
