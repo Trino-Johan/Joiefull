@@ -68,25 +68,43 @@ struct ProductDetailView: View {
                     // 4. ZONE COMMENTAIRE ET NOTATION
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 12) {
+                            // 1. avatar
                             Image(systemName: "person.crop.circle.fill")
-                                .resizable().frame(width: 35, height: 35).foregroundColor(.gray)
-                                .accessibilityHidden(true) // Décoratif uniquement
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                                .foregroundColor(.gray)
+                                .accessibilityHidden(true)
                             
-                            // --- ÉTOILES INTERACTIVES ---
-                            HStack(spacing: 2) {
+                            // 2. étoiles avec détection du clic
+                            HStack(spacing: 5) {
                                 ForEach(1...5, id: \.self) { index in
                                     Image(systemName: index <= product.userRating ? "star.fill" : "star")
                                         .foregroundColor(.orange)
+                                        .font(.title3) // Un peu plus grand pour faciliter le clic
+                                        .contentShape(Rectangle()) // Rend toute la zone cliquable
+                                        .onTapGesture {
+                                            
+                                            viewModel.rateProduct(product, with: index)
+                                            product.userRating = index
+                                        }
                                 }
                             }
-                            // ♿ Transformation en élément ajustable (Swipe haut/bas)
+                            // ♿ Accessibilité (Swipe haut/bas pour VoiceOver)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel("Votre note")
-                            .accessibilityValue("\(product.userRating) étoiles")
+                            .accessibilityValue("\(product.userRating) étoiles sur 5")
                             .accessibilityAdjustableAction { direction in
                                 switch direction {
-                                case .increment: if product.userRating < 5 { viewModel.rateProduct(product, with: product.userRating + 1); product.userRating += 1 }
-                                case .decrement: if product.userRating > 0 { viewModel.rateProduct(product, with: product.userRating - 1); product.userRating -= 1 }
+                                case .increment:
+                                    if product.userRating < 5 {
+                                        viewModel.rateProduct(product, with: product.userRating + 1)
+                                        product.userRating += 1
+                                    }
+                                case .decrement:
+                                    if product.userRating > 0 {
+                                        viewModel.rateProduct(product, with: product.userRating - 1)
+                                        product.userRating -= 1
+                                    }
                                 @unknown default: break
                                 }
                             }
