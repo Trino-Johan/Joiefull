@@ -31,7 +31,7 @@ class ProductViewModel: ObservableObject {
         isLoading = false
     }
     
-    // Permet d'obtenir uniquement les produits d'une catégorie (top,bottom,accesssories)
+    // obtenir uniquement les produits d'une catégorie (top,bottom,accesssories)
     func getProducts(for category: String) -> [Product] {
         return products.filter { $0.category == category }
     }

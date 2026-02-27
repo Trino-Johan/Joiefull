@@ -22,7 +22,7 @@ struct SplashView: View {
             }
             .accessibilityLabel("Écran de chargement Joiefull")
             .onAppear {
-                // Animation de "Pop" élastique pour le logo
+                // Animation pour le logo
                 withAnimation(.spring(response: 0.8, dampingFraction: 0.5, blendDuration: 0)) {
                     self.opacity = 1.0
                 }

@@ -168,26 +168,41 @@ struct ProductDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { selectedProductId = nil; dismiss() }) {
-                    HStack(spacing: 5) {
-                        Image(systemName: "chevron.left")
-                        Text("Home")
+                // ♿ On n'affiche le bouton que si l'appareil est un iPhone
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    Button(action: {
+                        selectedProductId = nil
+                        dismiss()
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "chevron.left")
+                            Text("Home")
+                        }
                     }
+                    .accessibilityLabel("Retour à l'accueil")
                 }
-                .accessibilityLabel("Retour à l'accueil")
             }
 
             
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
-                    // Logique de partage système
-                    let av = UIActivityViewController(activityItems: ["Regarde ce produit Joiefull : \(product.name)"], applicationActivities: nil)
+                    let textToShare = "Regarde ce produit Joiefull : \(product.name)"
+                    let av = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
+                    
                     if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                        let root = scene.windows.first?.rootViewController {
+                        
+                        // --- CONFIGURATION POUR IPAD ---
+                        if let popover = av.popoverPresentationController {
+                            popover.sourceView = root.view
+                            // On centre le popover sur l'écran pour éviter de chercher le bouton précis
+                            popover.sourceRect = CGRect(x: root.view.bounds.midX, y: root.view.bounds.midY, width: 0, height: 0)
+                            popover.permittedArrowDirections = [] // Enlève la flèche pour un look plus propre au centre
+                        }
+                        
                         root.present(av, animated: true)
                     }
-                })
-                {
+                }) {
                     Image(systemName: "square.and.arrow.up").foregroundColor(.black)
                 }
                 .accessibilityLabel("Partager")

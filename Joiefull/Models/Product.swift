@@ -1,6 +1,6 @@
 import Foundation
 
-struct Product: Identifiable, Codable {
+struct Product: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let category: String
@@ -18,7 +18,7 @@ struct Product: Identifiable, Codable {
 
     var comments: [String] = []
     
-    struct Picture: Codable {
+    struct Picture: Codable, Hashable {
         let url: String
         let description: String
     }
